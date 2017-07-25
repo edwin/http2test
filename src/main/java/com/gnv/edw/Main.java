@@ -25,14 +25,23 @@ public class Main {
     private void execute() throws Exception {
         ExecutorService threadExecutor = Executors.newFixedThreadPool(10);
         for (int i = 0; i < 500; i++) {
-            threadExecutor.execute(new HTTP1Test());
+            threadExecutor.execute(new HTTP1Test(i));
         }
         for (int i = 0; i < 500; i++) {
-            threadExecutor.execute(new HTTP2Test());
+            threadExecutor.execute(new HTTP2Test(i));
         }
     }
     
     private class HTTP1Test implements Runnable {
+        int i = 0;
+
+        public HTTP1Test() {
+        }
+        
+        public HTTP1Test(int i) {
+            this.i = i;
+        }
+        
         @Override
         public void run() {
             long lo = System.currentTimeMillis();
@@ -46,7 +55,7 @@ public class Main {
                 while ((line = reader.readLine()) != null) {
                     output.append(line + "\n");
                 }
-                System.out.println(output.toString().split("\n")[0] + (System.currentTimeMillis() - lo));
+                System.out.println(i+" "+output.toString().split("\n")[0] + (System.currentTimeMillis() - lo));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -55,6 +64,15 @@ public class Main {
 
     private class HTTP2Test implements Runnable {
 
+        int i = 0;
+
+        public HTTP2Test() {
+        }
+        
+        public HTTP2Test(int i) {
+            this.i = i;
+        }
+        
         @Override
         public void run() {
             long lo = System.currentTimeMillis();
@@ -68,7 +86,7 @@ public class Main {
                 while ((line = reader.readLine()) != null) {
                     output.append(line + "\n");
                 }
-                System.out.println(output.toString().split("\n")[0] + (System.currentTimeMillis() - lo));
+                System.out.println(i+" "+output.toString().split("\n")[0] + (System.currentTimeMillis() - lo));
             } catch (Exception e) {
                 e.printStackTrace();
             }
